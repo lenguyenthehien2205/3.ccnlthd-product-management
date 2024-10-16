@@ -1,0 +1,23 @@
+<form (ngSubmit)="onSubmit()">
+    <div>
+      <label for="title">Tiêu đề:</label>
+      <input type="text" id="title" [(ngModel)]="product.title" name="title" required>
+    </div>
+    <div>
+      <label for="price">Giá:</label>
+      <input type="number" id="price" [(ngModel)]="product.price" name="price" required>
+    </div>
+    <div>
+      <label for="description">Mô tả:</label>
+      <textarea id="description" [(ngModel)]="product.description" name="description" required></textarea>
+    </div>
+    <div>
+      <label for="category">Danh mục:</label>
+      <input type="text" id="category" [(ngModel)]="product.category" name="category" required>
+    </div>
+    <div>
+      <label for="image">URL hình ảnh:</label>
+      <input type="text" id="image" [(ngModel)]="product.image" name="image" required>
+    </div>
+    <button type="submit">Thêm sản phẩm</button>
+  </form>

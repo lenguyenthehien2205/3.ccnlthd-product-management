@@ -1,0 +1,9 @@
+<div class="product">
+    <div>
+        <img [src]="product?.image" [alt]="product?.title">
+        <h3>{{ product?.title }}</h3>
+        <p>Giá: {{ product?.price | currency }}</p>
+        <p>Danh mục: {{ product?.category }}</p>
+    </div>
+    <button (click)="onDelete()">Xóa</button>
+</div>
