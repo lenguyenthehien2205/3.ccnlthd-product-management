@@ -1,12 +1,21 @@
 <div class="product-management">
-    <div class="product-form">
-      <h2>Thêm sản phẩm mới</h2>
-      <app-product-form (addProduct)="addProduct($event)"></app-product-form>
-    </div>
-    <div class="product-grid">
-      <h2>Danh sách sản phẩm</h2>
-      <div class="grid-container">
-        <app-product *ngFor="let product of products" [product]="product" (delete)="deleteProduct(product.id!)"></app-product>
-      </div>
+  <div class="product-form">
+    <h2>{{ editingProduct ? 'Sửa sản phẩm' : 'Thêm sản phẩm mới' }}</h2>
+    <app-product-form 
+      [product]="editingProduct"
+      (addOrUpdateProduct)="addOrUpdateProduct($event)"
+      (cancelEdit)="editingProduct = null"
+    ></app-product-form>
+  </div>
+  <div class="product-grid">
+    <h2>Danh sách sản phẩm</h2>
+    <div class="grid-container">
+      <app-product 
+        *ngFor="let product of products" 
+        [product]="product" 
+        (delete)="deleteProduct(product.id!)"
+        (edit)="editProduct(product)"
+      ></app-product>
     </div>
   </div>
+</div>

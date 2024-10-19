@@ -1,9 +1,12 @@
-<div class="product">
+<div class="product" (click)="onEdit()">
     <div>
-        <img [src]="product?.image" [alt]="product?.title">
+        <div class="product-image">
+            <img [src]="product?.image" [alt]="product?.title" *ngIf="product?.image">
+            <div class="no-image" *ngIf="!product?.image">Không có hình ảnh</div>
+        </div>
         <h3>{{ product?.title }}</h3>
         <p>Giá: {{ product?.price | currency }}</p>
         <p>Danh mục: {{ product?.category }}</p>
     </div>
-    <button (click)="onDelete()">Xóa</button>
+    <button (click)="onDelete(); $event.stopPropagation()">Xóa</button>
 </div>

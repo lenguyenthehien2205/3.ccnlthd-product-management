@@ -9,6 +9,7 @@ import { ProductService } from './product/product.service';
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
+  editingProduct: Product | null = null;
 
   constructor(private productService: ProductService) { }
 
@@ -27,15 +28,30 @@ export class ProductListComponent implements OnInit {
     );
   }
 
-  addProduct(product: Product) {
-    this.productService.addProduct(product).subscribe(
-      (newProduct) => {
-        this.products.push(newProduct);
-      },
-      (error) => {
-        console.error('Lỗi khi thêm sản phẩm:', error);
-      }
-    );
+  addOrUpdateProduct(product: Product) {
+    if (product.id) {
+      this.productService.updateProduct(product).subscribe(
+        (updatedProduct) => {
+          const index = this.products.findIndex(p => p.id === updatedProduct.id);
+          if (index !== -1) {
+            this.products[index] = updatedProduct;
+          }
+          this.editingProduct = null;
+        },
+        (error) => {
+          console.error('Lỗi khi cập nhật sản phẩm:', error);
+        }
+      );
+    } else {
+      this.productService.addProduct(product).subscribe(
+        (newProduct) => {
+          this.products.push(newProduct);
+        },
+        (error) => {
+          console.error('Lỗi khi thêm sản phẩm:', error);
+        }
+      );
+    }
   }
 
   deleteProduct(id: number) {
@@ -47,5 +63,9 @@ export class ProductListComponent implements OnInit {
         console.error('Lỗi khi xóa sản phẩm:', error);
       }
     );
+  }
+
+  editProduct(product: Product) {
+    this.editingProduct = { ...product };
   }
 }

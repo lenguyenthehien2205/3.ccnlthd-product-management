@@ -9,8 +9,13 @@ import { Product } from './product.model';
 export class ProductComponent {
   @Input() product?: Product;
   @Output() delete = new EventEmitter<number>();
+  @Output() edit = new EventEmitter<Product>();
 
   onDelete() {
     this.delete.emit(this.product?.id);
+  }
+
+  onEdit() {
+    this.edit.emit(this.product);
   }
 }

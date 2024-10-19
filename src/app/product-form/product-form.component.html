@@ -1,23 +1,42 @@
-<form (ngSubmit)="onSubmit()">
-    <div>
-      <label for="title">Tiêu đề:</label>
-      <input type="text" id="title" [(ngModel)]="product.title" name="title" required>
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="title">Tiêu đề:</label>
+    <input type="text" id="title" formControlName="title">
+    <div *ngIf="title?.invalid && (title?.dirty || title?.touched)" class="error-message">
+      <div *ngIf="title?.errors?.['required']">Tiêu đề là bắt buộc.</div>
+      <div *ngIf="title?.errors?.['minlength']">Tiêu đề phải có ít nhất 3 ký tự.</div>
     </div>
-    <div>
-      <label for="price">Giá:</label>
-      <input type="number" id="price" [(ngModel)]="product.price" name="price" required>
+  </div>
+  <div>
+    <label for="price">Giá:</label>
+    <input type="number" id="price" formControlName="price">
+    <div *ngIf="price?.invalid && (price?.dirty || price?.touched)" class="error-message">
+      <div *ngIf="price?.errors?.['required']">Giá là bắt buộc.</div>
+      <div *ngIf="price?.errors?.['min']">Giá phải lớn hơn hoặc bằng 0.</div>
     </div>
-    <div>
-      <label for="description">Mô tả:</label>
-      <textarea id="description" [(ngModel)]="product.description" name="description" required></textarea>
+  </div>
+  <div>
+    <label for="description">Mô tả:</label>
+    <textarea id="description" formControlName="description"></textarea>
+    <div *ngIf="description?.invalid && (description?.dirty || description?.touched)" class="error-message">
+      <div *ngIf="description?.errors?.['required']">Mô tả là bắt buộc.</div>
+      <div *ngIf="description?.errors?.['minlength']">Mô tả phải có ít nhất 10 ký tự.</div>
     </div>
-    <div>
-      <label for="category">Danh mục:</label>
-      <input type="text" id="category" [(ngModel)]="product.category" name="category" required>
+  </div>
+  <div>
+    <label for="category">Danh mục:</label>
+    <input type="text" id="category" formControlName="category">
+    <div *ngIf="category?.invalid && (category?.dirty || category?.touched)" class="error-message">
+      <div *ngIf="category?.errors?.['required']">Danh mục là bắt buộc.</div>
     </div>
-    <div>
-      <label for="image">URL hình ảnh:</label>
-      <input type="text" id="image" [(ngModel)]="product.image" name="image" required>
-    </div>
-    <button type="submit">Thêm sản phẩm</button>
-  </form>
+  </div>
+  <div>
+    <label for="image">Hình ảnh sản phẩm:</label>
+    <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*" #fileInput>
+    <div *ngIf="imageError" class="error-message">{{ imageError }}</div>
+  </div>
+  <button type="submit" [disabled]="productForm.invalid || imageError">
+    {{ product ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm' }}
+  </button>
+  <button type="button" (click)="resetForm()" *ngIf="product">Hủy</button>
+</form>
